@@ -275,21 +275,10 @@ section {
     gap: 10px;
     flex-shrink: 0;
 }
-.header__logo-text strong {
+.header__logo-img {
+    height: 44px; 
+    width: auto;  
     display: block;
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--color-ink);
-    line-height: 1.1;
-    letter-spacing: -0.01em;
-}
-.header__logo-text span {
-    display: block;
-    font-family: var(--font-mono);
-    font-size: 10px;
-    color: var(--color-text-muted);
-    letter-spacing: 0.05em;
-    margin-top: 2px;
 }
 .header__actions {
     display: flex;
@@ -344,11 +333,6 @@ section {
 /* ───────────────────────────────────────────
    5. RELOCATION BANNER NOTICE
    ─────────────────────────────────────────── */
-.banner-notice {
-    background: linear-gradient(90deg, rgba(0, 180, 255, 0.06), rgba(255, 107, 53, 0.06));
-    border-bottom: 1px solid var(--color-border-soft);
-    padding: 10px 0;
-}
 .banner-notice .container {
     display: flex;
     align-items: center;
@@ -380,7 +364,10 @@ section {
    6. HERO
    ─────────────────────────────────────────── */
 .hero {
-    padding: var(--space-8) 0 var(--space-9);
+    padding: clamp(240px, 25vw, 320px) 0 var(--space-7);
+    min-height: 85vh; /* Sorgt dafür, dass der Bereich groß genug bleibt */
+    display: flex;
+    align-items: flex-end; /* Schiebt den kompletten Inhalt an den unteren Rand */
     overflow: hidden;
 }
 .hero__bg {
@@ -430,8 +417,9 @@ section {
     z-index: var(--z-content);
     display: grid;
     grid-template-columns: 1.2fr 1fr;
-    gap: var(--space-8);
-    align-items: center;
+    /* Vorher: align-items: center; */
+    align-items: flex-end; /* Richtet Text und Gerät unten bündig aus */
+    gap: 40px; /* Zieht das Widget etwas näher an den Text ran */
 }
 
 .hero__badge {
@@ -457,7 +445,8 @@ section {
 }
 
 .hero__headline {
-    font-size: clamp(40px, 6vw, 68px);
+    /* Vorher: clamp(40px, 6vw, 68px) -> Jetzt deutlich kleiner */
+    font-size: clamp(32px, 4.5vw, 52px); 
     font-weight: 800;
     letter-spacing: -0.03em;
     line-height: 1.05;
@@ -474,11 +463,11 @@ section {
 .hero__accent--warm { background-image: var(--gradient-warm); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
 
 .hero__sub {
-    font-size: 19px;
+    font-size: 17px; /* Vorher 19px */
     color: var(--color-text);
     line-height: 1.6;
     margin-bottom: var(--space-6);
-    max-width: 560px;
+    max-width: 500px; /* Vorher 560px */
 }
 .hero__sub strong { color: var(--color-ink); font-weight: 600; }
 
@@ -522,9 +511,11 @@ section {
 .hero__visual {
     position: relative;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 380px;
+    /* Vorher: align-items: center; justify-content: center; min-height: 380px; */
+    align-items: flex-end;
+    justify-content: flex-start; /* Zieht das Gerät nach links, näher an den Text */
+    min-height: auto; /* Entfernt die erzwungene Höhe */
+    padding-bottom: var(--space-5); /* Hebt das Gerät minimal an, damit es optisch perfekt zum Text passt */
 }
 .hero__device {
     position: relative;
@@ -633,9 +624,79 @@ section {
     20%  { opacity: 1; }
     100% { opacity: 0; transform: translateX(-30px) translateY(-30px); }
 }
+.hero__video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Sorgt dafür, dass das Video den gesamten Bereich ausfüllt */
+    z-index: -2;
+}
+.hero__video-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.65); /* Weißer, halbtransparenter Schleier */
+    z-index: -1;
+}
+/* --- Umzugs-Sticker in der Herosection --- */
+.hero__sticker {
+    position: absolute;
+    right: -20px;
+    top: 15%;
+    z-index: 50;
+    
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    max-width: 280px;
+    
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    padding: var(--space-4) var(--space-5);
+    box-shadow: var(--shadow-lg);
+    
+    /* Statische Drehung für den Sticker-Look - ganz ohne Animation und Unschärfe */
+    transform: rotate(4deg);
+}
 
+.hero__sticker-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--color-warm);
+    box-shadow: 0 0 8px var(--color-warm);
+    flex-shrink: 0;
+    margin-top: 5px;
+    animation: pulse-dot 2s ease-in-out infinite; /* Nutzt deine bereits vorhandene pulse-dot Animation */
+}
+
+.hero__sticker p {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--color-text);
+    margin: 0;
+}
+
+.hero__sticker strong {
+    color: var(--color-ink);
+}
+
+
+/* Anpassung für Mobile-Geräte, damit der Sticker nicht aus dem Bildschirm ragt */
+@media (max-width: 1024px) {
+    .hero__sticker {
+        right: 20px;
+        top: 20px;
+        transform-origin: top right;
+        max-width: 240px;
+    }
+}
 /* ───────────────────────────────────────────
-   7. INTRO TEXT
+   7. INTRO TEXT & PARTNER LOGOS
    ─────────────────────────────────────────── */
 .intro {
     padding: var(--space-7) 0;
@@ -643,18 +704,125 @@ section {
     border-top: 1px solid var(--color-border-soft);
     border-bottom: 1px solid var(--color-border-soft);
 }
+
 .intro__inner {
-    max-width: 860px;
+    max-width: var(--container-max);
     margin: 0 auto;
-    text-align: center;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr; /* Text-Spalte ist etwas breiter als die Logo-Spalte */
+    gap: var(--space-8);
+    align-items: center;
 }
+
+.intro__content {
+    text-align: left;
+}
+
 .intro__lead {
     font-size: clamp(18px, 2.2vw, 22px);
     line-height: 1.6;
     color: var(--color-text);
 }
-.intro__lead strong { color: var(--color-ink); font-weight: 600; }
 
+.intro__lead strong { 
+    color: var(--color-ink); 
+    font-weight: 600; 
+}
+
+/* Logo Raster */
+.intro__logos {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 2 Logos pro Reihe */
+    gap: var(--space-6);
+    align-items: center;
+    justify-items: center;
+}
+
+.intro__logo {
+    max-width: 140px;
+    max-height: 60px;
+    object-fit: contain;
+    /* Optional: Graustufen-Effekt für einen ruhigeren, harmonischen Look */
+    filter: grayscale(100%);
+    opacity: 0.6;
+    transition: all var(--duration-fast) var(--ease-out);
+}
+
+.intro__logo:hover {
+    filter: grayscale(0%);
+    opacity: 1;
+    transform: scale(1.05);
+}
+/* --- Marken-Laufband (Marquee) --- */
+.logo-marquee {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    margin-top: var(--space-8); /* Abstand nach oben zum Text */
+    padding: var(--space-4) 0;
+    display: flex;
+}
+
+/* Weiche Verblass-Effekte an den Rändern passend zur Hintergrundfarbe */
+.logo-marquee::before,
+.logo-marquee::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100px; /* Breite des Fade-Effekts */
+    z-index: 2;
+    pointer-events: none;
+}
+.logo-marquee::before {
+    left: 0;
+    background: linear-gradient(to right, var(--color-bg-soft), transparent);
+}
+.logo-marquee::after {
+    right: 0;
+    background: linear-gradient(to left, var(--color-bg-soft), transparent);
+}
+
+/* Die Schiene, die sich bewegt */
+.logo-marquee__track {
+    display: flex;
+    align-items: center;
+    width: max-content;
+    /* 25s bestimmt die Geschwindigkeit. Je kleiner, desto schneller */
+    animation: marqueeScroll 25s linear infinite;
+}
+
+/* Die einzelnen Logos */
+.logo-marquee__item {
+    height: 45px; /* Gewünschte Höhe der Logos */
+    width: auto;
+    object-fit: contain;
+    padding: 0 40px; /* Abstand zwischen den Logos */
+    
+    /* Graustufen-Effekt */
+    filter: grayscale(100%);
+    opacity: 0.5;
+    transition: all var(--duration-fast) var(--ease-out);
+}
+
+.logo-marquee__item:hover {
+    filter: grayscale(0%);
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+/* Die eigentliche Animation von rechts nach links */
+@keyframes marqueeScroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); } /* -50% schiebt genau das erste Set aus dem Bild, dann startet der Loop */
+}
+
+/* Falls jemand "Reduzierte Bewegung" im Betriebssystem aktiv hat, stoppt das Banner */
+@media (prefers-reduced-motion: reduce) {
+    .logo-marquee__track {
+        animation-play-state: paused;
+    }
+}
 /* ───────────────────────────────────────────
    8. SERVICES (3 Cards)
    ─────────────────────────────────────────── */
@@ -847,6 +1015,10 @@ section {
     gap: var(--space-8);
     align-items: start;
 }
+.anfrage__intro,
+.anfrage__form-wrap {
+    min-width: 0; 
+}
 .anfrage__intro .section-title { text-align: left; }
 .anfrage__intro > p {
     font-size: 17px;
@@ -873,6 +1045,45 @@ section {
     background: var(--gradient-cool);
     color: white;
     flex-shrink: 0;
+}
+
+/* --- Dezente Fotostrecke im Anfrage-Bereich --- */
+.anfrage__gallery {
+    position: relative;
+    width: 100%;
+    max-width: 100%; /* Sorgt für absolute Anpassung an die Spaltenbreite */
+    margin-top: var(--space-6);
+    overflow: hidden;
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+.anfrage__gallery-track {
+    display: flex;
+    width: max-content;
+    /* 35 Sekunden für eine sehr entspannte, dezente Bewegung */
+    animation: galleryScroll 35s linear infinite;
+}
+
+.anfrage__gallery-item {
+    height: 90px;  /* Deutlich kleiner (vorher 140px) */
+    width: 140px;  /* Deutlich schmaler (vorher 220px) */
+    object-fit: cover; 
+    border-radius: var(--radius-md);
+    margin-right: 12px; 
+    box-shadow: var(--shadow-sm);
+}
+
+@keyframes galleryScroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); } /* Endloser Loop */
+}
+
+/* Stoppt die Animation bei reduzierter Bewegung im Betriebssystem */
+@media (prefers-reduced-motion: reduce) {
+    .anfrage__gallery-track {
+        animation-play-state: paused;
+    }
 }
 
 .survey-form {
@@ -1228,6 +1439,37 @@ section {
     margin-bottom: var(--space-6);
 }
 .about__lead strong { color: var(--color-ink); font-weight: 600; }
+/* --- Neue Statistik-Box für den Über Uns Bereich --- */
+.about__stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
+    padding: var(--space-5);
+    background: white;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+}
+
+.about__stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.about__stat-num {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--color-cool);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+}
+
+.about__stat-label {
+    font-size: 14px;
+    color: var(--color-text);
+    font-weight: 500;
+}
 
 .about__values {
     display: grid;
@@ -1763,6 +2005,15 @@ body.cookie-visible .fab { bottom: calc(24px + 140px); }
     .hero__cta .btn { justify-content: center; }
     .hero__trust { gap: var(--space-4); }
     .hero__trust-divider { display: none; }
+    
+    .intro__inner { 
+        grid-template-columns: 1fr; /* Stapelt Text und Logos untereinander */
+        gap: var(--space-6); 
+    }
+    .intro__logos {
+        padding-top: var(--space-5);
+        border-top: 1px solid var(--color-border-soft);
+    }
 
     .survey-form { padding: var(--space-5); }
     .survey-options,
@@ -1782,6 +2033,7 @@ body.cookie-visible .fab { bottom: calc(24px + 140px); }
 
     .fab__label { display: none; }
     .fab { padding: 14px; }
+    
 }
 
 @media (max-width: 480px) {
