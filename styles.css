@@ -1335,6 +1335,153 @@ section {
     color: var(--color-text-muted);
     font-family: var(--font-mono);
 }
+/* --- Referenz-Cards mit Slider --- */
+.ref-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: var(--space-6);
+    margin-top: var(--space-6);
+}
+
+.ref-card {
+    background: white;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--duration) var(--ease-out), box-shadow var(--duration) var(--ease-out);
+}
+
+.ref-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Slider CSS */
+.ref-slider {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: var(--color-bg-muted);
+}
+
+.ref-slider__track {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.ref-slider__slide {
+    width: 100%;
+    height: 100%;
+    flex-shrink: 0;
+    object-fit: cover;
+}
+
+/* Buttons für Slider */
+.ref-slider__btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(4px);
+    color: var(--color-ink);
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 2;
+    opacity: 0;
+    transition: opacity 0.2s, background 0.2s;
+}
+.ref-slider:hover .ref-slider__btn { opacity: 1; }
+.ref-slider__btn:hover { background: white; }
+.ref-slider__btn--prev { left: 12px; }
+.ref-slider__btn--next { right: 12px; }
+
+/* Punkte (Dots) für Slider */
+.ref-slider__dots {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 6px;
+    z-index: 2;
+}
+.ref-slider__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.ref-slider__dot.active {
+    background: white;
+    transform: scale(1.2);
+}
+
+/* Card Body & Insight Box */
+.ref-card__body {
+    padding: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.ref-card__tag {
+    align-self: flex-start;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--color-cool);
+    background: rgba(0, 180, 255, 0.1);
+    padding: 4px 10px;
+    border-radius: var(--radius-full);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 12px;
+}
+
+.ref-card__title {
+    font-size: 20px;
+    margin-bottom: 8px;
+    line-height: 1.3;
+}
+
+.ref-card__desc {
+    font-size: 14px;
+    color: var(--color-text);
+    margin-bottom: var(--space-5);
+    flex-grow: 1;
+}
+
+/* Die neue Insight-Box */
+.ref-card__insight {
+    background: var(--color-bg-soft);
+    border-left: 3px solid var(--color-warm);
+    padding: 12px 16px;
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    font-size: 13px;
+    line-height: 1.5;
+}
+.ref-card__insight strong {
+    display: block;
+    color: var(--color-ink);
+    margin-bottom: 4px;
+}
+.ref-card__insight span {
+    color: var(--color-text);
+}
 
 /* ───────────────────────────────────────────
    12. TESTIMONIALS
