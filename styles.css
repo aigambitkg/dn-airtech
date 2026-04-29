@@ -506,51 +506,6 @@ section {
     height: 32px;
     background: var(--color-border);
 }
-/* NEU: Hero Visual und Sticker für Mobile stark verkleinern */
-        .hero__visual { 
-            min-height: 180px; 
-            padding-bottom: 0;
-            margin-bottom: var(--space-4);
-        }
-        
-        .hero__device { 
-            width: 160px; 
-            height: 160px; 
-            padding: 16px; 
-            border-radius: var(--radius-lg);
-        }
-        
-        .hero__device-num { 
-            font-size: 48px; 
-        }
-        
-        .hero__device-unit { 
-            font-size: 20px; 
-        }
-        
-        .hero__device-fan svg { 
-            width: 50px; 
-            height: 50px; 
-        }
-        
-        .hero__sticker {
-            max-width: 160px;
-            padding: 10px 12px;
-            right: 0;
-            top: 10px;
-            border-radius: var(--radius-lg);
-        }
-        
-        .hero__sticker p {
-            font-size: 11px;
-            line-height: 1.4;
-        }
-        
-        .hero__sticker-dot {
-            width: 8px;
-            height: 8px;
-            margin-top: 3px;
-        }
 
 /* Hero Visual: Animated AC Device */
 .hero__visual {
@@ -2401,6 +2356,51 @@ body.cookie-visible .fab { bottom: calc(24px + 140px); }
     .hero__trust { gap: var(--space-4); }
     .hero__trust-divider { display: none; }
     
+    .hero__visual { 
+        min-height: 180px; 
+        padding-bottom: 0;
+        margin-bottom: var(--space-4);
+    }
+    
+    .hero__device { 
+        width: 160px; 
+        height: 160px; 
+        padding: 16px; 
+        border-radius: var(--radius-lg);
+    }
+    
+    .hero__device-num { 
+        font-size: 48px; 
+    }
+    
+    .hero__device-unit { 
+        font-size: 20px; 
+    }
+    
+    .hero__device-fan svg { 
+        width: 50px; 
+        height: 50px; 
+    }
+    
+    .hero__sticker {
+        max-width: 160px;
+        padding: 10px 12px;
+        right: 0;
+        top: 10px;
+        border-radius: var(--radius-lg);
+    }
+    
+    .hero__sticker p {
+        font-size: 11px;
+        line-height: 1.4;
+    }
+    
+    .hero__sticker-dot {
+        width: 8px;
+        height: 8px;
+        margin-top: 3px;
+    }
+
     .intro__inner { 
         grid-template-columns: 1fr; /* Stapelt Text und Logos untereinander */
         gap: var(--space-6); 
