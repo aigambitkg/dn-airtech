@@ -263,28 +263,36 @@
     };
 
     const submitForm = async () => {
-      const payload = collectData();
+      // 1. Formular-Daten holen (wie in deinem Beispiel)
+      const formData = new FormData(form);
 
-      // Sende die Daten an unser neues PHP-Skript
-      const res = await fetch('send_mail.php', {
-        method:  'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify(payload)
+      // 2. Web3Forms Konfiguration hinzufügen (inklusive deines Keys)
+      formData.append("access_key", "f17ab082-b140-4d7a-abf7-de76df889566");
+      formData.append("subject", "Anfrage per Website"); // E-Mail Betreff
+      
+      // Absender-Namen aus Vor- und Nachname zusammensetzen
+      const fullName = formData.get("vorname") + " " + formData.get("nachname");
+      formData.append("from_name", fullName);
+      
+      // Damit in der E-Mail nicht einfach "on" beim Datenschutz steht:
+      if (formData.get("datenschutz") === "on") {
+          formData.set("datenschutz", "Ja, bestätigt");
+      }
+
+      // 3. Daten per POST direkt an Web3Forms senden
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData
       });
       
-      // Prüfen ob die Server-Antwort in Ordnung ist
-      if (!res.ok) {
-          throw new Error('Netzwerk-Antwort war nicht ok');
-      }
+      const data = await response.json();
       
-      const result = await res.json();
-      
-      // Prüfen ob das PHP-Skript einen Erfolg meldet
-      if (!result.success) {
-          throw new Error(result.message || 'Submit failed');
+      // 4. Überprüfen, ob Web3Forms die Daten akzeptiert hat
+      if (!response.ok || !data.success) {
+          throw new Error(data.message || 'Fehler beim Senden');
       }
 
-      // Erfolgs-State (Vielen Dank! Ansicht) anzeigen
+      // 5. Wenn erfolgreich: Deine "Vielen Dank!"-Ansicht einblenden
       steps.forEach(s => s.classList.remove('active'));
       if (successStep) successStep.classList.add('active');
       if (progressFill)  progressFill.style.width = '100%';
