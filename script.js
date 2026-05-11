@@ -265,27 +265,32 @@
     const submitForm = async () => {
       const payload = collectData();
 
-      // ─────────────────────────────────────────────────
-      // INTEGRATION POINT: hier den n8n-Webhook anbinden.
-      //
-      // const res = await fetch('https://aigambit.app.n8n.cloud/webhook/dn-airtech-lead', {
-      //   method:  'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body:    JSON.stringify(payload)
-      // });
-      // if (!res.ok) throw new Error('Submit failed');
-      // ─────────────────────────────────────────────────
+      // Sende die Daten an unser neues PHP-Skript
+      const res = await fetch('send_mail.php', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify(payload)
+      });
+      
+      // Prüfen ob die Server-Antwort in Ordnung ist
+      if (!res.ok) {
+          throw new Error('Netzwerk-Antwort war nicht ok');
+      }
+      
+      const result = await res.json();
+      
+      // Prüfen ob das PHP-Skript einen Erfolg meldet
+      if (!result.success) {
+          throw new Error(result.message || 'Submit failed');
+      }
 
-      // Demo: simulierter Erfolg
-      console.info('[DN-AirTecH] Lead payload:', payload);
-      await new Promise(r => setTimeout(r, 600));
-
-      // Erfolgs-State
+      // Erfolgs-State (Vielen Dank! Ansicht) anzeigen
       steps.forEach(s => s.classList.remove('active'));
       if (successStep) successStep.classList.add('active');
       if (progressFill)  progressFill.style.width = '100%';
       if (currentStepEl) currentStepEl.textContent = TOTAL;
       if (progressPct)   progressPct.textContent = '100 %';
+      
       const actions  = $('.survey-form__actions', form);
       const progress = $('.survey-form__progress', form);
       if (actions)  actions.style.display = 'none';
