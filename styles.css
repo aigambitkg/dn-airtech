@@ -706,16 +706,13 @@ section {
 }
 
 .intro__inner {
-    max-width: var(--container-max);
+    max-width: 900px; /* Eine angenehme Lesebreite festlegen */
     margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1.2fr 1fr; /* Text-Spalte ist etwas breiter als die Logo-Spalte */
-    gap: var(--space-8);
-    align-items: center;
+    /* Grid wurde entfernt, da wir nur noch ein Element haben */
 }
 
 .intro__content {
-    text-align: left;
+    text-align: center; /* Text zentrieren, damit er als alleinstehende Einleitung edel wirkt */
 }
 
 .intro__lead {
@@ -1278,7 +1275,7 @@ section {
 }
 
 /* ───────────────────────────────────────────
-   9. ABLAUF (Dynamischer Flow)
+   9. ABLAUF (Dynamischer Flow) - HORIZONTAL
    ─────────────────────────────────────────── */
 .flow-section { 
     background: var(--color-bg-soft); 
@@ -1286,67 +1283,73 @@ section {
 
 .flow-container {
     position: relative;
-    max-width: 900px;
+    max-width: 1200px; /* Etwas breiter, damit 4 Karten nebeneinander passen */
     margin: var(--space-7) auto 0;
     padding: var(--space-4) 0;
+    
+    /* NEU: Flex-Row für horizontale Ausrichtung */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--space-5);
 }
 
-/* Die mittlere "Rohrleitung" */
+/* Die horizontale "Rohrleitung" im Hintergrund */
 .flow-line {
     position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 50%;
-    width: 4px;
-    transform: translateX(-50%);
+    top: 48px; /* Zentriert hinter den 64px großen Icons (16px Padding + 32px) */
+    left: 0;
+    right: 0;
+    height: 4px;
+    width: 100%;
     background: var(--color-border);
     border-radius: 4px;
     overflow: hidden;
 }
 
-/* Die animierte "Flüssigkeit/Luft", die durch das Rohr strömt */
+/* Die animierte "Flüssigkeit", die von links nach rechts strömt */
 .flow-line-animated {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    /* Verwendet das Markenblau und Markenorange für einen Kalt/Warm-Effekt */
-    background: linear-gradient(to bottom, var(--color-cool) 0%, var(--color-warm) 50%, var(--color-cool) 100%);
-    background-size: 100% 200%;
+    background: linear-gradient(to right, var(--color-cool) 0%, var(--color-warm) 50%, var(--color-cool) 100%);
+    background-size: 200% 100%;
     animation: flowCoolant 4s linear infinite;
 }
 
 @keyframes flowCoolant {
-    0% { background-position: 0% 0%; }
-    100% { background-position: 0% -200%; }
+    0% { background-position: 100% 0%; }
+    100% { background-position: -100% 0%; }
 }
 
 /* Die einzelnen Stationen */
 .flow-step {
     display: flex;
+    flex-direction: column; /* Icon oben, Text darunter */
     align-items: center;
-    justify-content: space-between;
-    margin-bottom: var(--space-7);
+    flex: 1; /* Alle Karten nehmen den gleichen Platz ein */
     position: relative;
     z-index: 2;
 }
-.flow-step:last-child { margin-bottom: 0; }
 
-/* Alternierendes Layout: Zick-Zack Aufbau */
+/* Zick-Zack Auflösen (vorher war es row-reverse) */
 .flow-step:nth-child(even) { 
-    flex-direction: row-reverse; 
+    flex-direction: column; 
 }
 
 /* Die Content-Karten */
 .flow-content {
-    width: calc(50% - 50px);
+    width: 100%;
     background: white;
     padding: var(--space-5);
     border-radius: var(--radius-xl);
     border: 1px solid var(--color-border);
     box-shadow: var(--shadow-sm);
     transition: transform var(--duration) var(--ease-out), box-shadow var(--duration);
+    text-align: center; /* Text zentrieren */
 }
 
 .flow-step:hover .flow-content {
@@ -1359,7 +1362,7 @@ section {
     border-color: var(--color-warm);
 }
 
-/* Die runden Geräte-Icons auf der Linie */
+/* Die runden Geräte-Icons */
 .flow-icon-wrapper {
     width: 64px;
     height: 64px;
@@ -1369,12 +1372,12 @@ section {
     display: flex;
     align-items: center;
     justify-content: center;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+    position: relative;
     box-shadow: 0 0 0 6px var(--color-bg-soft);
     color: var(--color-cool);
     transition: all var(--duration);
+    margin-bottom: var(--space-5); /* Abstand zur Karte */
+    z-index: 2;
 }
 
 /* Farben wechseln bei den geraden Schritten */
@@ -1383,12 +1386,12 @@ section {
     color: var(--color-warm); 
 }
 
-/* Hover-Effekt auf die Icons: Sie leuchten auf */
+/* Hover-Effekt auf die Icons */
 .flow-step:hover .flow-icon-wrapper {
     background: var(--color-ink);
     color: white;
     border-color: var(--color-ink);
-    transform: translateX(-50%) scale(1.1);
+    transform: scale(1.1); /* TranslateX entfernt, da es jetzt zentriert ist */
 }
 
 /* Typografie im Flow */
@@ -1402,37 +1405,59 @@ section {
 }
 .flow-step:nth-child(even) .flow-number { color: var(--color-warm); }
 
-.flow-content h3 { 
-    margin-bottom: 8px; 
-    font-size: 20px; 
-}
-.flow-content p { 
-    font-size: 15px; 
-    color: var(--color-text); 
-    line-height: 1.6;
-}
+.flow-content h3 { margin-bottom: 8px; font-size: 20px; }
+.flow-content p { font-size: 15px; color: var(--color-text); line-height: 1.6; }
 
 /* ───────────────────────────────────────────
-   Mobile Anpassung
+   Mobile Anpassung für den Ablauf 
    ─────────────────────────────────────────── */
 @media (max-width: 768px) {
-    /* Linie nach links verschieben */
-    .flow-line { left: 32px; }
-    
-    /* Zick-Zack auflösen, alles linksbündig */
-    .flow-step, .flow-step:nth-child(even) {
-        flex-direction: column;
-        align-items: flex-start;
-        padding-left: 80px; /* Platz für die Linie machen */
+    .flow-container {
+        display: block; /* Flexbox auflösen */
     }
     
-    .flow-content { width: 100%; }
+    /* Linie wieder vertikal an die linke Seite setzen */
+    .flow-line { 
+        left: 32px; 
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        height: auto;
+    }
     
-    /* Icons über der nach links verschobenen Linie zentrieren */
+    /* Animation für die vertikale Richtung umschreiben */
+    .flow-line-animated {
+        background: linear-gradient(to bottom, var(--color-cool) 0%, var(--color-warm) 50%, var(--color-cool) 100%);
+        background-size: 100% 200%;
+        animation: flowCoolantVert 4s linear infinite;
+    }
+
+    @keyframes flowCoolantVert {
+        0% { background-position: 0% 0%; }
+        100% { background-position: 0% -200%; }
+    }
+    
+    /* Schritte untereinander aufreihen */
+    .flow-step, .flow-step:nth-child(even) {
+        flex-direction: row;
+        align-items: flex-start;
+        margin-bottom: var(--space-6);
+    }
+    
+    .flow-content { 
+        width: 100%; 
+        margin-left: 80px; /* Platz für die vertikale Linie machen */
+        text-align: left;
+    }
+    
+    /* Icons über der vertikalen Linie zentrieren */
     .flow-icon-wrapper {
+        position: absolute;
         left: 32px;
+        margin-bottom: 0;
         transform: translateX(-50%);
     }
+    
     .flow-step:hover .flow-icon-wrapper {
         transform: translateX(-50%) scale(1.05);
     }
